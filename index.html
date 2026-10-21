@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Salta por la Disciplina Deportiva</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Phaser 3 desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+</head>
+<body>
+
+  <!-- Contenedor donde Phaser dibuja el juego -->
+  <div id="juego"></div>
+
+  <!-- HUD (marcador e instrucciones) -->
+  <div id="hud">
+    <div class="marcador">
+      <span class="icono-moneda"></span>
+      <span id="contador">0 / 10</span>
+    </div>
+    <div class="altura">⬆ <span id="altura">0 m</span></div>
+    <div class="ayuda">← → para moverte · el atleta salta solo</div>
+    <button id="btn-ayuda" class="btn-ayuda" aria-label="Ver instrucciones">?</button>
+  </div>
+
+  <!-- Controles táctiles (solo se ven en celular/tablet) -->
+  <div id="controles-tactiles">
+    <div class="grupo">
+      <button class="btn-tactil" data-accion="left">◀</button>
+      <button class="btn-tactil" data-accion="right">▶</button>
+    </div>
+    <button class="btn-tactil saltar" data-accion="jump">⤒</button>
+  </div>
+
+  <!-- Ventana modal -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-tarjeta" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <div class="modal-cabecera">
+        <span id="modal-numero" class="insignia">1 / 10</span>
+        <div id="modal-icono" class="modal-icono">🏅</div>
+      </div>
+      <div class="modal-cuerpo">
+        <h2 id="modal-titulo">Título</h2>
+        <p id="modal-texto">Texto</p>
+        <div id="modal-consejo" class="consejo"></div>
+        <ul id="modal-lista" class="lista-final"></ul>
+      </div>
+      <button id="modal-boton" class="modal-boton">Continuar</button>
+    </div>
+  </div>
+
+  <!-- Ventana de instrucciones -->
+  <div id="instrucciones" class="modal" aria-hidden="true">
+    <div class="modal-tarjeta tarjeta-instrucciones" role="dialog" aria-modal="true" aria-labelledby="instr-titulo">
+      <div class="modal-cabecera">
+        <div class="modal-icono icono-personaje">
+          <img src="img/personaje.png" alt="Personaje del juego">
+        </div>
+      </div>
+      <div class="modal-cuerpo">
+        <h2 id="instr-titulo">¿Cómo jugar?</h2>
+        <ul class="pasos">
+          <li>
+            <span class="paso-icono">🎯</span>
+            <div>
+              <strong>Objetivo</strong>
+              <p>Sube saltando de plataforma en plataforma hasta la bandera de meta y recoge las <b>10 monedas</b>.</p>
+            </div>
+          </li>
+          <li>
+            <span class="paso-icono">🕹️</span>
+            <div>
+              <strong>Controles</strong>
+              <p class="solo-teclado">Muévete con <kbd>←</kbd> <kbd>→</kbd> o <kbd>A</kbd> <kbd>D</kbd>. <span id="texto-salto">El atleta salta solo al tocar una plataforma.</span></p>
+              <p class="solo-tactil">Usa los botones <kbd>◀</kbd> <kbd>▶</kbd> de la pantalla. El atleta salta solo al tocar una plataforma.</p>
+            </div>
+          </li>
+          <li>
+            <span class="paso-icono">🪙</span>
+            <div>
+              <strong>Aprende</strong>
+              <p>Cada moneda abre una ventana sobre la <b>disciplina deportiva</b>. Léela y pulsa <em>Continuar</em>.</p>
+            </div>
+          </li>
+          <li>
+            <span class="paso-icono">🔁</span>
+            <div>
+              <strong>Truco</strong>
+              <p>Si sales por un lado de la pantalla apareces por el otro. Si caes, ¡no te rindas y vuelve a subir!</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button id="btn-comenzar" class="modal-boton">¡A jugar! ▶</button>
+    </div>
+  </div>
+
+  <!-- Pantalla de carga -->
+  <div id="pantalla-carga">
+    <div class="carga-contenido">
+      <div class="carga-escena">
+        <span class="carga-moneda m1"></span>
+        <span class="carga-moneda m2"></span>
+        <span class="carga-moneda m3"></span>
+        <div class="carga-atleta" role="img" aria-label="Atleta saltando"></div>
+        <div class="carga-sombra"></div>
+        <div class="carga-plataforma"></div>
+      </div>
+
+      <h1 class="titulo-juego">Salta por la <span>Disciplina Deportiva</span></h1>
+
+      <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div id="barra-progreso"></div>
+      </div>
+      <p id="carga-texto">Atando los tenis… 0%</p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

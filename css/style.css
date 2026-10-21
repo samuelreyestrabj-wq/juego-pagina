@@ -1,0 +1,561 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0f172a;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#juego {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ---------- HUD ---------- */
+#hud {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.marcador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.75);
+  color: #fff;
+  font-weight: 800;
+  font-size: 22px;
+  padding: 8px 18px 8px 10px;
+  border-radius: 999px;
+  border: 3px solid #f5c518;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.icono-moneda {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff6b0, #f5c518 45%, #c99700);
+  border: 2px solid #a87e00;
+}
+
+.marcador.pulso {
+  animation: pulso 0.4s ease;
+}
+
+@keyframes pulso {
+  50% { transform: scale(1.18); }
+}
+
+.altura {
+  background: rgba(15, 23, 42, 0.75);
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 3px solid #38bdf8;
+}
+
+.ayuda {
+  margin-left: auto;
+  background: rgba(15, 23, 42, 0.6);
+  color: #e2e8f0;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+
+/* ---------- Controles táctiles ---------- */
+#controles-tactiles {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  padding: 0 18px;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 5;
+}
+
+#controles-tactiles .grupo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btn-tactil {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  background: rgba(15, 23, 42, 0.45);
+  color: #fff;
+  font-size: 28px;
+  touch-action: none;
+}
+
+.btn-tactil.saltar {
+  width: 88px;
+  height: 88px;
+  background: rgba(234, 88, 12, 0.6);
+}
+
+.btn-tactil.activo {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+@media (pointer: coarse) {
+  #controles-tactiles { display: flex; }
+  .ayuda { display: none; }
+}
+
+/* ---------- Modal ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s;
+  z-index: 10;
+}
+
+.modal.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-tarjeta {
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  transform: scale(0.8) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal.visible .modal-tarjeta {
+  transform: scale(1) translateY(0);
+}
+
+.modal-cabecera {
+  position: relative;
+  background: linear-gradient(135deg, #1d4ed8, #0ea5e9);
+  border-radius: 20px 20px 0 0;
+  padding: 26px 20px 46px;
+  text-align: center;
+}
+
+.insignia {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: #f5c518;
+  color: #422006;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.modal-icono {
+  position: absolute;
+  left: 50%;
+  bottom: -38px;
+  transform: translateX(-50%);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #f5c518;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.modal-cuerpo {
+  padding: 50px 26px 8px;
+  text-align: center;
+  color: #1e293b;
+}
+
+.modal-cuerpo h2 {
+  font-size: 22px;
+  color: #1d4ed8;
+  margin-bottom: 12px;
+}
+
+.modal-cuerpo p {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.consejo {
+  margin-top: 16px;
+  background: #fff7ed;
+  border-left: 5px solid #ea580c;
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #7c2d12;
+}
+
+.consejo:empty { display: none; }
+
+.lista-final {
+  list-style: none;
+  margin-top: 14px;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.lista-final:empty { display: none; }
+
+.lista-final li {
+  background: #eff6ff;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 14px;
+}
+
+.modal-boton {
+  display: block;
+  margin: 18px auto 24px;
+  background: linear-gradient(135deg, #ea580c, #f59e0b);
+  color: #fff;
+  border: none;
+  font-size: 17px;
+  font-weight: 800;
+  padding: 12px 36px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #9a3412;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.modal-boton:hover { filter: brightness(1.08); }
+
+.modal-boton:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #9a3412;
+}
+
+/* ---------- Botón de ayuda (?) ---------- */
+.btn-ayuda {
+  pointer-events: auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid #f5c518;
+  background: rgba(15, 23, 42, 0.75);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-ayuda:hover { background: #1d4ed8; }
+
+.ayuda + .btn-ayuda { margin-left: 0; }
+.altura + .ayuda + .btn-ayuda { margin-left: 0; }
+
+@media (pointer: coarse) {
+  .btn-ayuda { margin-left: auto !important; }
+}
+
+/* ---------- Ventana de instrucciones ---------- */
+#instrucciones { z-index: 15; }
+
+.tarjeta-instrucciones .modal-cabecera {
+  background: linear-gradient(135deg, #ea580c, #f59e0b);
+}
+
+.pasos {
+  list-style: none;
+  text-align: left;
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.pasos li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.paso-icono {
+  font-size: 26px;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.pasos strong {
+  display: block;
+  color: #1d4ed8;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.modal-cuerpo .pasos p {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 26px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 3px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  color: #0f172a;
+}
+
+.solo-tactil { display: none; }
+
+@media (pointer: coarse) {
+  .solo-teclado { display: none; }
+  .solo-tactil { display: block; }
+}
+
+/* ---------- Pantalla de carga ---------- */
+#pantalla-carga {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.18), transparent 60%),
+    linear-gradient(160deg, #1d4ed8, #0ea5e9 70%, #38bdf8);
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+#pantalla-carga.oculta {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.carga-contenido {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  color: #fff;
+}
+
+.carga-escena {
+  position: relative;
+  width: 220px;
+  height: 200px;
+  margin: 0 auto 10px;
+}
+
+.carga-atleta {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  width: 72px;
+  height: 96px;
+  margin-left: -36px;
+  transform-origin: 50% 100%;
+  /* sprite.png: 4 cuadros (quieto, paso 1, paso 2, salto) */
+  background: url("../img/sprite.png") 0 0 / 288px 96px no-repeat;
+  animation:
+    rebote 0.9s cubic-bezier(0.33, 0, 0.66, 1) infinite,
+    pose-salto 0.9s steps(1) infinite;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Cambia de cuadro: en el piso "quieto", en el aire "salto" */
+@keyframes pose-salto {
+  0%   { background-position: 0 0; }
+  10%  { background-position: -216px 0; }
+  88%  { background-position: 0 0; }
+}
+
+@keyframes rebote {
+  0%   { transform: translateY(0) scale(1.15, 0.85); }
+  12%  { transform: translateY(-10px) scale(0.95, 1.05); }
+  50%  { transform: translateY(-90px) scale(1, 1); }
+  88%  { transform: translateY(-10px) scale(0.97, 1.03); }
+  100% { transform: translateY(0) scale(1.15, 0.85); }
+}
+
+.carga-sombra {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  width: 50px;
+  height: 10px;
+  margin-left: -25px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.3);
+  animation: sombra 0.9s cubic-bezier(0.33, 0, 0.66, 1) infinite;
+}
+
+@keyframes sombra {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(0.5); opacity: 0.4; }
+}
+
+.carga-plataforma {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 140px;
+  height: 22px;
+  margin-left: -70px;
+  border-radius: 4px;
+  background: #5f5f5f url("../img/plataforma.png") center / auto 100%;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.carga-moneda {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff6b0, #f5c518 45%, #c99700);
+  border: 2px solid #a87e00;
+  animation: girar 1.2s ease-in-out infinite, flotar 2s ease-in-out infinite;
+}
+
+.carga-moneda.m1 { left: 14px;  top: 70px; }
+.carga-moneda.m2 { left: 96px;  top: 0;    animation-delay: 0.2s, 0.4s; }
+.carga-moneda.m3 { right: 14px; top: 56px; animation-delay: 0.4s, 0.8s; }
+
+@keyframes girar {
+  0%, 100% { scale: 1 1; }
+  50%      { scale: 0.15 1; }
+}
+
+@keyframes flotar {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+
+.titulo-juego {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  text-shadow: 0 3px 0 rgba(15, 23, 42, 0.35);
+  margin-bottom: 22px;
+}
+
+.titulo-juego span {
+  display: block;
+  font-size: 34px;
+  color: #fde047;
+}
+
+.barra {
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.35);
+  border: 3px solid #fff;
+  overflow: hidden;
+}
+
+#barra-progreso {
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.25) 0 10px, transparent 10px 20px),
+    linear-gradient(90deg, #f59e0b, #ea580c);
+  background-size: 28px 28px, 100% 100%;
+  animation: rayas 0.6s linear infinite;
+}
+
+@keyframes rayas {
+  to { background-position: 28px 0, 0 0; }
+}
+
+#carga-texto {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+@media (max-width: 420px) {
+  .titulo-juego span { font-size: 28px; }
+}
+
+/* Personaje en la cabecera de las instrucciones */
+.icono-personaje {
+  width: 88px;
+  height: 88px;
+  bottom: -44px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e0f2fe, #ffffff);
+}
+
+.icono-personaje img {
+  width: 60px;
+  height: 80px;
+  object-fit: contain;
+  margin-top: 6px;
+  animation: saludo 1.6s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+@keyframes saludo {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.tarjeta-instrucciones .modal-cuerpo { padding-top: 56px; }

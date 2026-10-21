@@ -1,0 +1,18 @@
+Imágenes del juego (deben llamarse exactamente así):
+
+  fondo.png       -> fondo del nivel (se ajusta al ancho y se repite hacia arriba)
+  plataforma.png  -> textura de plataformas y piso (se repite como mosaico)
+  sprite.png      -> hoja de sprites del personaje: 4 cuadros de 96 x 128 px en una fila
+                     (384 x 128 en total), en este orden:
+                       1. quieto   2. paso 1   3. paso 2   4. salto
+                     Se usa para animar al atleta en el juego y en la pantalla de carga.
+  personaje.png   -> el personaje de pie (96 x 128 px). Aparece en la ventana de
+                     instrucciones. Si borras sprite.png, el juego usa esta imagen fija.
+
+Todos los personajes miran hacia la DERECHA (el juego los voltea al ir a la izquierda).
+
+Si quieres usar tu propia hoja de sprites con otro tamaño de cuadro, cambia
+frameWidth y frameHeight en js/main.js (función preload) y el background-size
+de .carga-atleta en css/style.css.
+
+Si alguna imagen no está, el juego dibuja su propia versión por código.
